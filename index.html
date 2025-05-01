@@ -159,6 +159,7 @@
             border: 1px solid var(--border-color);
             overflow-y: auto;
             line-height: 1.5;
+            resize: none;
         }
 
         .button-group {
@@ -288,7 +289,7 @@
                 <h3 class="panel-title">格式化结果</h3>
             </div>
             <div class="panel-body">
-                <div id="result"></div>
+                <textarea id="result" placeholder="格式化后的SQL将显示在这里..."></textarea>
             </div>
         </div>
     </div>
@@ -316,7 +317,7 @@
 
     function formatSQL() {
         const input = document.getElementById('sqlInput').value;
-        const resultDiv = document.getElementById('result');
+        const resultTextarea = document.getElementById('result');
 
         if (!input.trim()) {
             showToast('请输入SQL语句', true);
@@ -330,22 +331,22 @@
                 uppercase: true, // 关键字大写
                 linesBetweenQueries: 2 // 查询之间的空行数
             });
-            resultDiv.textContent = formatted;
+            resultTextarea.value = formatted;
             showToast('格式化成功');
         } catch (error) {
-            resultDiv.textContent = '格式化错误：' + error.message;
+            resultTextarea.value = '格式化错误：' + error.message;
             showToast('格式化失败：' + error.message, true);
         }
     }
 
     function clearAll() {
         document.getElementById('sqlInput').value = '';
-        document.getElementById('result').textContent = '';
+        document.getElementById('result').value = '';
         showToast('已清空内容');
     }
 
     function copyResult() {
-        const resultText = document.getElementById('result').textContent;
+        const resultText = document.getElementById('result').value;
         if (!resultText) {
             showToast('没有可复制的内容', true);
             return;
