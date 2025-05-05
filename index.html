@@ -3,12 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL 格式化工具</title>
+    <title>SQL 格式化工具 - 在线美化SQL代码 | 提高SQL可读性</title>
+    <meta name="description" content="免费在线SQL格式化工具，支持MySQL、PostgreSQL、SQL Server等多种SQL方言，一键美化SQL代码，提高查询语句可读性和可维护性">
+    <meta name="keywords" content="SQL格式化,SQL美化,SQL工具,SQL在线格式化,SQL语法高亮,MySQL格式化,PostgreSQL格式化,代码美化">
+    <meta name="author" content="Ruimo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/sqlFormat/">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SQL 格式化工具 - 在线美化SQL代码">
+    <meta property="og:description" content="免费在线SQL格式化工具，支持多种SQL方言，一键美化SQL代码，提高查询语句可读性">
+    <meta property="og:url" content="https://yourdomain.com/sqlFormat/">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SQL 格式化工具 - 在线美化SQL代码">
+    <meta name="twitter:description" content="免费在线SQL格式化工具，支持多种SQL方言，一键美化SQL代码，提高查询语句可读性">
+    <!-- 网站图标 -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- 样式表 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- highlight.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <!-- 自定义样式 -->
     <link rel="stylesheet" href="styles.css">
+    <!-- 结构化数据 - JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SQL 格式化工具",
+      "url": "https://yourdomain.com/sqlFormat/",
+      "description": "免费在线SQL格式化工具，支持多种SQL方言，一键美化SQL代码",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Ruimo"
+      }
+    }
+    </script>
 </head>
 <body>
 <header>
@@ -26,15 +66,15 @@
                 <h3 class="panel-title">输入 SQL</h3>
             </div>
             <div class="panel-body">
-                <textarea id="sqlInput" placeholder="在此粘贴您的SQL语句...">SELECT id,name FROM users WHERE age > 25 AND status = 'active' ORDER BY id DESC;</textarea>
+                <textarea id="sqlInput" placeholder="在此粘贴您的SQL语句..." aria-label="SQL输入区域">SELECT id,name FROM users WHERE age > 25 AND status = 'active' ORDER BY id DESC;</textarea>
                 <div class="button-group">
-                    <button class="btn-primary" onclick="formatSQL()">
+                    <button class="btn-primary" onclick="formatSQL()" aria-label="格式化SQL">
                         <i class="bi bi-magic"></i> 格式化
                     </button>
-                    <button class="btn-secondary" onclick="clearAll()">
+                    <button class="btn-secondary" onclick="clearAll()" aria-label="清空内容">
                         <i class="bi bi-trash"></i> 清空
                     </button>
-                    <button class="btn-success" onclick="copyResult()">
+                    <button class="btn-success" onclick="copyResult()" aria-label="复制结果">
                         <i class="bi bi-clipboard"></i> 复制结果
                     </button>
                 </div>
@@ -49,17 +89,50 @@
             <div class="panel-body">
                 <div class="code-container">
                     <pre><code id="result" class="language-sql">-- 格式化后的SQL将显示在这里...</code></pre>
-                    <button class="copy-btn" onclick="copyResult()">
+                    <button class="copy-btn" onclick="copyResult()" aria-label="复制代码">
                         <i class="bi bi-clipboard"></i> 复制
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    
+    <section class="features">
+        <h2>为什么选择我们的SQL格式化工具？</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="bi bi-lightning-charge"></i>
+                <h3>快速格式化</h3>
+                <p>即时处理SQL查询，无需等待，无需登录</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-globe"></i>
+                <h3>多种SQL方言</h3>
+                <p>支持MySQL、PostgreSQL、SQL Server等多种SQL语法</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-shield-check"></i>
+                <h3>安全可靠</h3>
+                <p>纯客户端处理，您的SQL不会发送到服务器</p>
+            </div>
+            <div class="feature-item">
+                <i class="bi bi-phone"></i>
+                <h3>响应式设计</h3>
+                <p>在任何设备上都能获得良好的使用体验</p>
+            </div>
+        </div>
+    </section>
 </main>
 
 <footer>
-    <p>SQL 格式化工具 &copy; 2023 Ruimo</p>
+    <div class="footer-content">
+        <p>SQL 格式化工具 &copy; 2023 Ruimo</p>
+        <ul class="footer-links">
+            <li><a href="https://github.com/yourusername/sqlFormat" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="privacy.html">隐私政策</a></li>
+            <li><a href="terms.html">使用条款</a></li>
+        </ul>
+    </div>
 </footer>
 
 <div id="toast" class="toast">
