@@ -14,6 +14,7 @@
 <body>
 <div id="app" class="container">
     <div class="glass-panel">
+        <div class="current-time-display">当前时间：{{ currentTimeFormatted }}</div>
         <h1 class="title animate__animated animate__fadeIn">💰 实时薪资计算器 💰</h1>
 
         <div v-if="!isRunning" class="setup-form">
@@ -83,7 +84,7 @@
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-label">已工作时长</div>
-                    <div class="stat-value">{{ formatTime(elapsedTime) }}</div>
+                    <div class="stat-value">{{ formatTime(totalWorkedTime) }}</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">每秒收入</div>

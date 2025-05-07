@@ -19,10 +19,13 @@ const app = Vue.createApp({
             currentTime: null,
             elapsedTime: 0,
             
+            // 当前系统时间
+            systemTime: new Date(),
+            
             // 计算值
             currentEarnings: 0,
             totalExpectedEarnings: 0,
-            lastConfettiMilestone: 0,
+            lastCoinMilestone: 0, // 最后一次撒金币的整元数
             
             // 动画数据
             countUp: {
@@ -33,6 +36,7 @@ const app = Vue.createApp({
             // 工作状态
             workStatus: '',  // 可能的值: 'before_work', 'working', 'after_work'
             initialWorkProgress: 0, // 开始计时时已经工作的进度（百分比）
+            initialWorkedSeconds: 0, // 开始计时时已经工作的秒数
             
             // 定时器
             timerInterval: null,
@@ -117,6 +121,20 @@ const app = Vue.createApp({
                 default:
                     return '';
             }
+        },
+        
+        // 总的已工作时间（包括初始已工作时间和计时器记录的时间）
+        totalWorkedTime() {
+            return this.initialWorkedSeconds + this.elapsedTime;
+        },
+        
+        // 格式化显示当前时间
+        currentTimeFormatted() {
+            const time = this.systemTime;
+            const hours = time.getHours().toString().padStart(2, '0');
+            const minutes = time.getMinutes().toString().padStart(2, '0');
+            const seconds = time.getSeconds().toString().padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
         }
     },
     
@@ -179,16 +197,23 @@ const app = Vue.createApp({
                     
                     // 计算已经赚取的金额
                     this.currentEarnings = this.hourlyRate * workedHours;
+                    
+                    // 记录已工作的秒数
+                    this.initialWorkedSeconds = Math.floor(workedHours * 3600);
                 } else {
                     // 不在工作时间
                     if (currentTimeAdjusted < this.startTime && currentTimeAdjusted >= this.endTime) {
                         this.workStatus = 'before_work';
                         this.initialWorkProgress = 0;
+                        this.initialWorkedSeconds = 0;
+                        this.currentEarnings = 0; // 还未上班，收入为0
                     } else {
                         this.workStatus = 'after_work';
                         this.initialWorkProgress = 100;
                         // 已结束工作，获得全部收入
                         this.currentEarnings = this.hourlyRate * this.calculatedWorkHours;
+                        // 记录全部工作时间
+                        this.initialWorkedSeconds = Math.floor(this.calculatedWorkHours * 3600);
                     }
                 }
             } else {
@@ -205,21 +230,31 @@ const app = Vue.createApp({
                     
                     // 计算已经赚取的金额
                     this.currentEarnings = this.hourlyRate * workedHours;
+                    
+                    // 记录已工作的秒数
+                    this.initialWorkedSeconds = Math.floor(workedHours * 3600);
                 } else if (currentTimeAdjusted < this.startTime) {
                     // 还未上班
                     this.workStatus = 'before_work';
                     this.initialWorkProgress = 0;
+                    this.initialWorkedSeconds = 0;
+                    this.currentEarnings = 0; // 还未上班，收入为0
                 } else {
                     // 已经下班
                     this.workStatus = 'after_work';
                     this.initialWorkProgress = 100;
                     // 已结束工作，获得全部收入
                     this.currentEarnings = this.hourlyRate * this.calculatedWorkHours;
+                    // 记录全部工作时间
+                    this.initialWorkedSeconds = Math.floor(this.calculatedWorkHours * 3600);
                 }
             }
             
             // 更新初始收入值
             this.countUp.value = this.currentEarnings;
+            
+            // 记录当前整元里程碑，用于后续撒金币
+            this.lastCoinMilestone = Math.floor(this.currentEarnings);
         },
         
         // 开始计时
@@ -239,13 +274,12 @@ const app = Vue.createApp({
             this.timerStartTime = new Date().getTime();
             this.currentTime = this.timerStartTime;
             this.elapsedTime = 0;
-            this.lastConfettiMilestone = Math.floor(this.currentEarnings / 100);
             this.isRunning = true;
             
             // 创建定时器，每50ms更新一次
             this.timerInterval = setInterval(() => {
                 this.updateTimer();
-            }, 50);
+            }, 200);
             
             // 初始化粒子效果
             this.initParticles();
@@ -276,23 +310,44 @@ const app = Vue.createApp({
         
         // 更新计时器
         updateTimer() {
-            // 更新当前时间和经过的时间
-            this.currentTime = new Date().getTime();
-            this.elapsedTime = Math.floor((this.currentTime - this.timerStartTime) / 1000);
+            // 获取当前时间
+            const now = new Date().getTime();
+            // 更新系统时间
+            this.systemTime = new Date();
+            // 计算这次更新与上次更新之间的时间差（秒）
+            const deltaSeconds = (now - this.currentTime) / 1000;
+            // 更新当前时间
+            this.currentTime = now;
+            // 累加总经过时间
+            this.elapsedTime += Math.floor(deltaSeconds);
             
             // 如果初始状态是正在工作，继续计算收入增长
             if (this.workStatus === 'working') {
-                // 计算当前收入 = 初始收入 + 经过时间产生的收入
-                const timeGeneratedEarnings = this.perSecondRate * this.elapsedTime;
-                this.currentEarnings = this.countUp.value + timeGeneratedEarnings;
+                // 只计算这次更新产生的收入增量
+                const incrementalEarnings = this.perSecondRate * deltaSeconds;
+                this.currentEarnings += incrementalEarnings;
             }
             
-            // 检查是否达到里程碑（每100元）
-            const milestone = Math.floor(this.currentEarnings / 100);
-            if (milestone > this.lastConfettiMilestone) {
-                this.lastConfettiMilestone = milestone;
-                this.celebrateWithConfetti();
-                this.dropCoins();
+            // 检查是否达到新的整元里程碑
+            const currentWholeYuan = Math.floor(this.currentEarnings);
+            if (currentWholeYuan > this.lastCoinMilestone) {
+                // 每增加一元就撒一次金币
+                this.lastCoinMilestone = currentWholeYuan;
+                
+                // 整10元和整100元时撒更多金币
+                if (currentWholeYuan % 100 === 0) {
+                    // 整百元大庆祝
+                    this.celebrateWithConfetti('large');
+                    this.dropCoins(50);
+                } else if (currentWholeYuan % 10 === 0) {
+                    // 整十元中等庆祝
+                    this.celebrateWithConfetti('medium');
+                    this.dropCoins(30);
+                } else {
+                    // 普通整元小庆祝
+                    this.celebrateWithConfetti('small');
+                    this.dropCoins(20);
+                }
             }
             
             // 添加流畅的数字更新
@@ -407,19 +462,35 @@ const app = Vue.createApp({
         },
         
         // 庆祝金币效果（使用canvas-confetti库）
-        celebrateWithConfetti() {
-            confetti({
-                particleCount: 100,
-                spread: 70,
+        celebrateWithConfetti(size = 'medium') {
+            let options = {
                 origin: { y: 0.6 },
                 colors: ['#FFD700', '#FFDF00', '#F0E68C', '#DAA520', '#FFA500']
-            });
+            };
+            
+            switch (size) {
+                case 'small':
+                    options.particleCount = 30;
+                    options.spread = 50;
+                    break;
+                case 'large':
+                    options.particleCount = 200;
+                    options.spread = 90;
+                    options.startVelocity = 45;
+                    break;
+                case 'medium':
+                default:
+                    options.particleCount = 100;
+                    options.spread = 70;
+                    break;
+            }
+            
+            confetti(options);
         },
         
         // 掉落金币效果
-        dropCoins() {
+        dropCoins(numberOfCoins = 20) {
             const coinsContainer = document.getElementById('coins-container');
-            const numberOfCoins = 20;
             
             for (let i = 0; i < numberOfCoins; i++) {
                 setTimeout(() => {
@@ -465,6 +536,11 @@ const app = Vue.createApp({
             duration: 1,
             ease: "power3.out"
         });
+        
+        // 创建系统时间更新定时器，每秒更新一次
+        setInterval(() => {
+            this.systemTime = new Date();
+        }, 1000);
     }
 });
 

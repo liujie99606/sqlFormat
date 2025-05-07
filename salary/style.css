@@ -388,4 +388,24 @@ body {
     .earning-value {
         font-size: 3.5rem;
     }
+}
+
+.current-time-display {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.current-time-display:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 } 
