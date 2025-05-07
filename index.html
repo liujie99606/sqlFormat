@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL 格式化工具 - 在线美化SQL代码 | 提高SQL可读性</title>
-    <meta name="description" content="免费在线SQL格式化工具，支持MySQL、PostgreSQL、SQL Server等多种SQL方言，一键美化SQL代码，提高查询语句可读性和可维护性">
-    <meta name="keywords" content="SQL格式化,SQL美化,SQL工具,SQL在线格式化,SQL语法高亮,MySQL格式化,PostgreSQL格式化,代码美化">
+    <meta name="description"
+          content="免费在线SQL格式化工具，支持MySQL、PostgreSQL、SQL Server等多种SQL方言，一键美化SQL代码，提高查询语句可读性和可维护性">
+    <meta name="keywords"
+          content="SQL格式化,SQL美化,SQL工具,SQL在线格式化,SQL语法高亮,MySQL格式化,PostgreSQL格式化,代码美化">
     <meta name="author" content="Ruimo">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://yourdomain.com/sqlFormat/">
@@ -25,29 +27,30 @@
     <!-- 样式表 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- highlight.js CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <!-- SCSS编译后的CSS -->
     <link rel="stylesheet" href="styles2.css">
     <!-- 结构化数据 - JSON-LD -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "SQL 格式化工具",
-      "url": "https://yourdomain.com/sqlFormat/",
-      "description": "免费在线SQL格式化工具，支持多种SQL方言，一键美化SQL代码",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "CNY"
-      },
-      "creator": {
-        "@type": "Person",
-        "name": "Ruimo"
-      }
-    }
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "SQL 格式化工具",
+            "url": "https://yourdomain.com/sqlFormat/",
+            "description": "免费在线SQL格式化工具，支持多种SQL方言，一键美化SQL代码",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "CNY"
+            },
+            "creator": {
+                "@type": "Person",
+                "name": "Ruimo"
+            }
+        }
     </script>
 </head>
 <body>
@@ -67,7 +70,8 @@
                     <h3 class="panel-title">输入 SQL</h3>
                 </div>
                 <div class="panel-body">
-                    <textarea v-model="sqlInput" placeholder="在此粘贴您的SQL语句..." aria-label="SQL输入区域"></textarea>
+                    <textarea v-model="sqlInput" placeholder="在此粘贴您的SQL语句..."
+                              aria-label="SQL输入区域"></textarea>
                     <div class="button-group">
                         <button class="btn-primary" @click="formatSQL" aria-label="格式化SQL">
                             <i class="bi bi-magic"></i> 格式化
@@ -97,7 +101,7 @@
                 </div>
             </div>
         </div>
-        
+
         <section class="features">
             <h2>为什么选择我们的SQL格式化工具？</h2>
             <div class="feature-grid">
@@ -148,7 +152,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/sql.min.js"></script>
 <!-- sql-formatter 库 -->
-<script src="https://cdn.jsdelivr.net/npm/sql-formatter@12.2.3/dist/sql-formatter.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sql-formatter@12.2.3/dist/sql-formatter.min.js"
+        type="text/javascript"></script>
 <!-- 主应用脚本 -->
 <script src="main.js"></script>
 </body>
