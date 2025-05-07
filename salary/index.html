@@ -67,6 +67,10 @@
                 <h2 class="mb-3">当前已赚取</h2>
                 <div class="earning-value">¥{{ formattedEarnings }}</div>
             </div>
+            
+            <div class="work-status-badge" :class="'status-' + workStatus">
+                {{ workStatusText }}
+            </div>
 
             <div class="progress-container mb-4">
                 <div class="progress" style="height: 25px;">
