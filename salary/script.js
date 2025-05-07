@@ -1,3 +1,14 @@
+/*
+ * 注意: 该文件已不再使用，已被拆分为模块化文件结构
+ * 请查看 salary/js/ 目录下的文件:
+ * - app.js - 主应用入口文件
+ * - config.js - 配置文件
+ * - effects.js - 视觉效果
+ * - storage.js - 本地存储
+ * - timer.js - 计时器功能
+ */
+
+// 以下是原始代码，保留作为参考
 // 创建Vue应用
 const app = Vue.createApp({
     data() {
